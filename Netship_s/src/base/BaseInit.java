@@ -3,16 +3,22 @@ package base;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -24,6 +30,8 @@ import org.testng.annotations.BeforeSuite;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BaseInit {
 	public static Properties storage = null;
@@ -39,9 +47,44 @@ public class BaseInit {
 
 		// Move to extentreport file
 
-		System.out.println("lunching chrome browser");
-		System.setProperty("webdriver.chrome.driver", driverPath);
-		driver = new ChromeDriver();
+		// --Opening Chrome Browser
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+		WebDriverManager.chromedriver().setup();
+		ChromeOptions options = new ChromeOptions();
+
+		// options.addArguments("headless");
+		options.addArguments("--incognito");
+		options.addArguments("--test-type");
+		options.addArguments("--no-proxy-server");
+		options.addArguments("--proxy-bypass-list=*");
+		options.addArguments("--disable-extensions");
+		options.addArguments("--no-sandbox");
+		// options.addArguments("window-size=1036,776");
+
+		options.addArguments("--start-maximized");
+		String downloadFilepath = System.getProperty("user.dir") + "\\src\\main\\resources";
+		HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
+		chromePrefs.put("profile.default_content_settings.popups", 0);
+		chromePrefs.put("download.prompt_for_download", "false");
+		chromePrefs.put("safebrowsing.enabled", "false");
+		chromePrefs.put("download.default_directory", downloadFilepath);
+		options.setExperimentalOption("prefs", chromePrefs);
+		capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+		capabilities.setPlatform(Platform.ANY);
+
+		// options.addArguments("--headless");
+		// options.addArguments("window-size=1936,1066");
+
+		driver = new ChromeDriver(options);
+
+		// Default size
+		Dimension currentDimension = driver.manage().window().getSize();
+		int height = currentDimension.getHeight();
+		int width = currentDimension.getWidth();
+		System.out.println("Current height: " + height);
+		System.out.println("Current width: " + width);
+		System.out.println("window size==" + driver.manage().window().getSize());
 		startTest();
 
 		driver.get("https://stagingns.nglog.com");
@@ -56,17 +99,15 @@ public class BaseInit {
 		Login("tathya01", "Tathya@01");
 
 	}
+
 	@BeforeMethod
-    public void testMethodName(Method method) {
+	public void testMethodName(Method method) {
 
+		String testName = method.getName();
+		test = report.startTest(testName);
 
+	}
 
-       String testName = method.getName();
-        test = report.startTest(testName);
-
-
-
-   }
 	public static void startTest() {
 		// You could find the xml file below. Create xml file in your project and copy
 		// past the code mentioned below
@@ -84,6 +125,7 @@ public class BaseInit {
 		report.endTest(test);
 		report.flush();
 	}
+
 	public static String getScreenshot(WebDriver driver, String screenshotName) throws IOException {
 
 		TakesScreenshot ts = (TakesScreenshot) driver;
@@ -108,7 +150,7 @@ public class BaseInit {
 		FileUtils.copyFile(source, finalDestination);
 		return destination;
 	}
-	
+
 	@AfterMethod
 	public void getResult(ITestResult result) throws Exception {
 
@@ -133,6 +175,7 @@ public class BaseInit {
 			test.log(LogStatus.SKIP, "Test Case Skipped is " + result.getName());
 		}
 	}
+
 	public void Login(String username, String password) throws InterruptedException {
 		driver.findElement(By.id("inputUsername")).sendKeys(username);
 		driver.findElement(By.id("inputPassword")).sendKeys(password);
@@ -217,11 +260,13 @@ public class BaseInit {
 		msg.append("Please find attached file of Report and Log");
 
 		String subject = "Selenium Automation Script: Netship";
-		//String File = "C:\\Users\\tgandhi\\eclipse-workspace\\Netship_s\\test-output\\emailable-report.html";
+		// String File =
+		// "C:\\Users\\tgandhi\\eclipse-workspace\\Netship_s\\test-output\\emailable-report.html";
 		String File = "C:\\Users\\tgandhi\\eclipse-workspace\\Netship_s\\Report\\ExtentReport\\ExtentReportResults.html";
 
 		try {
-			// /kunjan.modi@samyak.com, pgandhi@samyak.com,parth.doshi@samyak.com,ravina.prajapati@samyak.com
+			// /kunjan.modi@samyak.com,
+			// pgandhi@samyak.com,parth.doshi@samyak.com,ravina.prajapati@samyak.com
 			SendEmail.sendMail("tathya.gandhi@samyak.com,ravina.prajapati@samyak.com", subject, msg.toString(), File);
 		} catch (Exception ex) {
 			logger.error(ex);
