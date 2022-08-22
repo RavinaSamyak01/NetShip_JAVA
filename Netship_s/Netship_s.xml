@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Netship_s">
+
+    <test thread-count="5" name="Lookupshipment">
+		<classes>
+			<class name="logoutDiv.Lookupshipment"></class>
+		</classes>
+	</test>
+      
+   <test thread-count="5" name="ManageBatchorder">
+		<classes>
+			<class name="logoutDiv.ManageBatchorder"></class>
+		</classes>
+	</test>
+   
+    <test thread-count="5" name="ConsigneAddrImport">
+		<classes>
+			<class name="logoutDiv.ConsigneeAddrImport"></class>
+		</classes>
+	</test>
+    
+    <test thread-count="5" name="Importorder">
+		<classes>
+			<class name="logoutDiv.Importorder"></class>
+		</classes>
+	</test>
+    
+    <test thread-count="5" name="UserProfile">
+		<classes>
+			<class name="logoutDiv.UserProfile"></class>
+		</classes>
+	</test>
+    
+    <test thread-count="5" name="Documents">
+		<classes>
+			<class name="logoutDiv.Documents"></class>
+		</classes>
+	</test>  
+
+    <test thread-count="5" name="UserPreferences">
+		<classes>
+			<class name="logoutDiv.UserPreferences"></class>
+		</classes>
+	</test>   
+    
+    <test thread-count="5" name="OrderPreferences">
+		<classes>
+			<class name="logoutDiv.OrderPreferences"></class>
+		</classes>
+	</test>
+ 
+    <test thread-count="5" name="Contactus">
+		<classes>
+			<class name="logoutDiv.Contactus"></class>
+		</classes>
+	</test>
+
+    <test thread-count="5" name="SearchJob">
+		<classes>
+			<class name="master_Screen.SearchJob"></class>
+		</classes>
+	</test>
+ 
+    <test thread-count="5" name="ShipPackage_C">
+		<classes>
+			<class name="master_Screen.ShipPackage_C"></class>
+		</classes>
+	</test>
+
+    <test thread-count="5" name="ShipPackage_I">
+		<classes>
+			<class name="master_Screen.ShipPackage_I"></class>
+		</classes>
+	</test>
+
+    <test thread-count="5" name="Get_Quote">
+		<classes>
+			<class name="master_Screen.Get_Quote"></class>
+		</classes>
+	</test>
+
+    <test thread-count="5" name="Address_book">
+		<classes>
+			<class name="master_Screen.Address_book"></class>
+		</classes>
+	</test>
+
+    <test thread-count="5" name="ASN">
+		<classes>
+			<class name="master_Screen.ASN"></class>
+		</classes>
+	</test>
+
+    <test thread-count="5" name="Reorder_Log">
+		<classes>
+			<class name="master_Screen.Reorder_Log"></class>
+		</classes>
+	</test>
+
+    <test thread-count="5" name="Map_view">
+		<classes>
+			<class name="master_Screen.Map_view"></class>
+		</classes>
+	</test>
+
+      <test thread-count="5" name="SendEmail">
+        <classes>
+          <class name="base.SendEmail"></class>
+        </classes>
+</test>
+
+  </suite> 

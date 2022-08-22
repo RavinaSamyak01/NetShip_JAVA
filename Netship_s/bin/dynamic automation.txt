@@ -1,0 +1,5 @@
+Three types of automation 1. Fixed automation.
+                          2. Programmable automation.
+						  3. Flexible automation.
+Getting started with Testng
+- intro - testng is testing framework.
